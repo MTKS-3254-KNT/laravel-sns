@@ -8,6 +8,12 @@ use Illuminate\Http\Request;
 
 class ArticleController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->authorizeResource(Article::class, 'article');
+    }
+
     public function index()
     {
     $articles = Article::all()->sortByDesc('created_at');
@@ -28,5 +34,54 @@ class ArticleController extends Controller
         $article->save();
         return redirect()->route('articles.index');
     }
+    
+    public function edit(Article $article)
+    {
+        return view('articles.edit', ['article' => $article]);
+    }
+
+    public function update(ArticleRequest $request, Article $article)
+    {
+        $article->fill($request->all())->save();
+        return redirect()->route('articles.index');
+    }
+
+    public function destroy(Article $article)
+    {
+        $article->delete();
+        return redirect()->route('articles.index');
+    }
+
+    public function show(Article $article)
+    {
+        return view('articles.show', ['article' => $article]);
+    }
+
+    public function like(Request $request, Article $article)
+    {
+        $article->likes()->detach($request->user()->id);
+        // 記事モデルとLikeモデルのアソシエーション、detachでユーザーidが同じテーブルを削除
+        $article->likes()->attach($request->user()->id);
+        // 記事モデルとLikeモデルのアソシエーション、attachで新規作成しユーザーidをテーブルに記録
+
+        return [
+            'id' => $article->id,
+            'countLikes' => $article->count_likes,
+        ];
+    }
+
+    public function unlike(Request $request, Article $article)
+    {
+        $article->likes()->detach($request->user()->id);
+        // 記事モデルとLikeモデルのアソシエーション、detachでユーザーidが同じテーブルを削除
+
+
+        return [
+            'id' => $article->id,
+            'countLikes' => $article->count_likes,
+        ];
+    }
+
+
 
 }

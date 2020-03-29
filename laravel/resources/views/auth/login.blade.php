@@ -26,8 +26,14 @@
                   <label for="password">パスワード</label>
                   <input class="form-control" type="password" id="password" name="password" required>
                 </div>
- 
+                
                 <input type="hidden" name="remember" id="remember" value="on">
+
+                <div class="text-left">
+                  <a href="{{ route('password.request') }}" class="card-text">パスワードを忘れた方</a>
+                </div>
+                <!-- ログイン画面からパスワード再設定メール要求画面へ遷移 -->
+
 
                 <button class="btn btn-block blue-gradient mt-2 mb-2" type="submit">ログイン</button>
 
