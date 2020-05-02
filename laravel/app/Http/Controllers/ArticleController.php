@@ -1,29 +1,37 @@
 <?php
+// PHPの記述宣言
 
 namespace App\Http\Controllers;
+// ネームスペース（在住地）
 
 use App\Article;
 use App\Http\Requests\ArticleRequest;
 use Illuminate\Http\Request;
+// クラスメソッドの使用宣言
 
 class ArticleController extends Controller
+// 他のコントローラクラスを継承
 {
 
     public function __construct()
+    // アクセス装飾子付き関数定義
+    // publicはどこからでもアクセス可能な修飾子、何も付けない場合はpublicを指定したものと同じになる
     {
         $this->authorizeResource(Article::class, 'article');
     }
 
     public function index()
+    // アクセス装飾子付き関数定義
     {
     $articles = Article::all()->sortByDesc('created_at');
+    // create時間基準に全ての記事を取得し、変数に代入
     
     return view('articles.index', ['articles' => $articles]);
+    // Viewの表示をするための返り値
     }
 
     public function create()
     {
-        // $article = Article::store()
         return view('articles.create');
     }
 
@@ -74,7 +82,6 @@ class ArticleController extends Controller
     {
         $article->likes()->detach($request->user()->id);
         // 記事モデルとLikeモデルのアソシエーション、detachでユーザーidが同じテーブルを削除
-
 
         return [
             'id' => $article->id,

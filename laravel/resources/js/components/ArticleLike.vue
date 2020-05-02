@@ -7,15 +7,16 @@
       <i class="fas fa-heart mr-1"
         :class="{
           'red-text':this.isLikedBy,
-          'animated zoomOutLeft fast':this.gotToLike
+          'animated flip fast':this.gotToLike
           }"
-          <!-- rubberBand -->
         @click="clickLike" 
       />
+      <!-- ♡アイコン、♥の色付、いいね機能のアニメーション、クリック時のアクション -->
     </button>
     {{ countLikes }}
   </div>
 </template>
+
 
 <script>
   export default {
